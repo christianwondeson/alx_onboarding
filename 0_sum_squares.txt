@@ -1,0 +1,10 @@
+Write "Please enter a number"
+Read number
+Set sum to 0;Set i to 1;
+
+While(i<=n)
+Set sum to sum+(i*i)
+Set i to i=i+1
+end While
+write sum
+
