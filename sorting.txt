@@ -1,0 +1,28 @@
+input three numbers num1 num2 num3
+create storages high middle low
+IF num1 > num2 and num1 > num3 THEN
+store num1 on low
+IF num2 < num3 THEN
+store num2 on middle
+store num3 on high
+ELSE
+store num3 on middle
+store num2 on high
+ELSE IF num2 < num1 and num2 < num3 THEN
+store num2 on low
+IF num1 < num3 THEN
+store num1 on middle
+store num3 on high
+ELSE
+store num3 on middle
+store num1 on high
+ELSE
+store num3 n low
+IF num2 < num1 THEN
+store num2 on middle
+store num1 on high
+ELSE
+store num1 on middle
+store num2 on high
+
+
