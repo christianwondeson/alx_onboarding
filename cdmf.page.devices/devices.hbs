@@ -1,0 +1,157 @@
+{{#zone 'topCss'}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/style.css">
+
+{{/zone}}
+{{unit 'cdmf.unit.ui.title' pageTitle='Device Management'}}
+
+{{unit 'cdmf.unit.data-tables-extended'}}
+{{unit 'cdmf.unit.lib.ui-permissions-utility'}}
+
+{{#zone 'breadcrumbs'}}
+<li>
+  <a href='{{@app.context}}/'>
+    <i class='icon fw fw-home'></i>
+  </a>
+</li>
+{{#if group}}
+<li>
+  <a href='{{@app.context}}/groups'>
+    Groups
+  </a>
+</li>
+<li>
+  <a href='#'>
+    {{group.name}}
+  </a>
+</li>
+{{else}}
+<li>
+  <a href='{{@app.context}}/devices'>
+    Devices
+  </a>
+</li>
+{{/if}}
+{{/zone}}
+
+{{#zone 'navbarActions'}}
+{{#if group}}
+<li>
+  <a href='{{@app.context}}/devices' class='cu-btn'>
+    <span class='icon fw-stack'>
+      <i class='fw fw-add fw-stack-1x'></i>
+      <i class='fw fw-circle-outline fw-stack-2x'></i>
+    </span>
+    Assign from My Devices
+  </a>
+</li>
+{{else}}
+{{#if permissions.enroll}}
+<li>
+  <a href='{{@app.context}}/device/enroll' class='cu-btn'>
+    <span class='icon fw-stack'>
+      <i class='fw fw-add fw-stack-1x'></i>
+      <i class='fw fw-circle-outline fw-stack-2x'></i>
+    </span>
+    Enroll Device
+  </a>
+</li>
+{{/if}}
+{{/if}}
+{{/zone}}
+
+{{#zone 'content'}}
+
+<div id="preloader">
+  <div id="loader"></div>
+</div>
+<div id='osm-map' style='height: 600px;'>
+</div>
+
+
+<script src='https://unpkg.com/leaflet@1.6.0/dist/leaflet.js'></script>
+<link href='https://unpkg.com/leaflet@1.6.0/dist/leaflet.css' rel='stylesheet' />
+<script src='https://unpkg.com/axios/dist/axios.min.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src='https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js'></script>
+<link href='https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css' rel='stylesheet' />
+<link href='https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css' rel='stylesheet' />
+
+<script src="./js/map.js"></script>
+<div class="container">
+  <div class="chart-container">
+    <canvas id="myChart"></canvas>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <script src="./js/chart.js"></script>
+
+  <div class="stats">
+    <div id="top_component"></div>
+    <div id="bottom_component"></div>
+  </div>
+</div>
+<script src="./js/app.js"></script>
+
+<div class="table-container">
+  <div class="table-content">
+    <div class="view-devices_container">
+      <label for="view-devices-button" id="custom-view-devices-button">
+        View Devices
+      </label>
+      <input id="view-devices-button" type="button" />
+      <input type="button" id="view-devices-button">
+    </div>
+    <table id="example" class="table table-striped">
+      <thead>
+        <tr>
+          <th>Registration Time</th>
+          <th>Serial Number</th>
+          <th>Type</th>
+          <th>Model</th>
+          <th>Terminal Status</th>
+          <th>City</th>
+          <th>Merchant</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+      </tbody>
+      <tfoot>
+        <tr>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+
+
+<script src="./js/app.js"></script>
+
+{{/zone}}
+
+
+{{#zone 'bottomJs'}}
+
+<script id='device-listing' data-server-url='{{serverUrl}}' data-current-user='{{@user.username}}'
+  data-device-types='{{deviceTypes}}' data-portal-url='{{portalUrl}}' data-user-domain='{{userDomain}}'
+  type='text/x-handlebars-template'></script>
+{{js 'js/listing.js'}}
+{{/zone}}

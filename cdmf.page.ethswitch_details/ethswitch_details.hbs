@@ -1,0 +1,120 @@
+{{unit 'cdmf.unit.ui.title' pageTitle='New'}}
+{{unit 'cdmf.unit.data-tables-extended'}}
+{{unit 'cdmf.unit.ui.modal'}}
+{{#zone 'topCss'}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+{{/zone}}
+<link rel="stylesheet" href="./css/style.css">
+{{#zone 'breadcrumbs'}}
+
+<li>
+  <a href='{{@app.context}}/'>
+    <i class='icon fw fw-home'></i>
+  </a>
+</li>
+<li>
+  <a href='{{@app.context}}/transactions'>
+    Transactions
+  </a>
+  /
+  <a href='{{@app.context}}/transactions/ethswitch_details'>
+    Ethswitch Details
+  </a>
+</li>
+{{/zone}}
+
+
+
+{{#zone 'content'}}
+
+<h2> POS Transactions </h2>
+<div class="container">
+
+  <button id="export-button"><i class="fa fa-download"> </i> Export</button>
+</div>
+
+
+<div id="transactions">
+  <div class="table-container">
+    <div class="table-content">
+
+      <table id="table_1" class="table table-striped">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Merchant</th>
+            <th>Terminal</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Payment Methods</th>
+          </tr>
+        </thead>
+        <tbody id="table-pos-body">
+        </tbody>
+        <tfoot>
+          <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th id="total-pos-amount"></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>
+
+<h2> EthSwitch Transactions </h2>
+<div class="container">
+  <button id="export-button"><i class="fa fa-download"> </i> Export</button>
+</div>
+<div id="transactions">
+  <div class="table-container">
+    <div class="table-content">
+
+      <table id="table_2" class="table table-striped">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Merchant</th>
+            <th>Terminal</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Payment Methods</th>
+          </tr>
+        </thead>
+        <tbody id="table-eth-body">
+        </tbody>
+        <tfoot>
+          <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th id="total-eth-amount"></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.4/axios.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+<script src="./js/app.js" ></script>
+
+
+{{/zone}}

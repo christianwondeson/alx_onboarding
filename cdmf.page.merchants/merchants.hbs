@@ -1,0 +1,470 @@
+{{unit 'cdmf.unit.ui.title' pageTitle='New'}}
+{{unit 'cdmf.unit.data-tables-extended'}}
+{{unit 'cdmf.unit.ui.modal'}}
+
+{{#zone 'breadcrumbs'}}
+
+<li>
+  <a href='{{@app.context}}/'>
+    <i class='icon fw fw-home'></i>
+  </a>
+</li>
+<li>
+  <a href='{{@app.context}}/transactions'>
+    Transactions
+  </a>
+</li>
+<li>Merchant</li>
+{{/zone}}
+{{#zone "topCss"}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+  }
+
+  #export-button {
+    align-self: flex-end;
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  #export-button:hover {
+    background-color: #45a049;
+  }
+
+  .table-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .table-content {
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    overflow-x: auto;
+  }
+
+  .dataTables_filter {
+    position: absolute;
+    margin-right: 20px;
+    top: 0;
+    right: 0;
+  }
+
+  #example {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: solid #ddd 1px;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  #example thead th {
+    background-color: #0a5b76;
+    color: white;
+    padding: 16px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    border: 2px solid white;
+  }
+
+  #example tbody td {
+    padding: 12px;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    border: 2px solid white;
+  }
+
+  #example tbody tr:nth-child(odd) {
+    background-color: #cfe9fc;
+  }
+
+  #example tbody tr:nth-child(even) {
+    background-color: #f5f5f5;
+  }
+
+  #example tfoot th {
+    background-color: #0a5b76;
+    color: white;
+    padding: 16px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .row {
+    margin: 0px;
+  }
+
+  .container {
+    display: flex;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .hds {
+    display: flex;
+  }
+
+  .hds h3 {
+    margin: 0;
+  }
+
+  #export-button {
+    margin-left: auto;
+  }
+
+  .pagnation_nav {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+  }
+</style>
+{{/zone}}
+
+{{#zone 'content'}}
+
+<div class="container">
+  <div class="hds">
+    <h3 id="terminal"></h3>
+    <h3 id="total-header"></h3>
+  </div>
+
+  <button id="export-button"><i class="fa fa-download"> </i> Export</button>
+</div>
+<div id="transactions">
+  <div class="table-container">
+    <div class="table-content">
+
+      <table id="example" class="table table-striped" style="width: 100%">
+        <thead>
+          <tr>
+            <th>Terminals</th>
+            <th>Date</th>
+            <th>Transaction ID</th>
+            <th>Customer</th>
+            <th>Clerk</th>
+            <th>Payment Methods</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Response</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+        </tbody>
+        <tfoot>
+          <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th id="total-amount"></th>
+            <th></th>
+            <th></th>
+
+          </tr>
+        </tfoot>
+      </table>
+
+      <div class="pagnation_nav">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-end">
+            <!-- Pagination buttons will be generated dynamically -->
+          </ul>
+        </nav>
+      </div>
+
+    </div>
+  </div>
+
+
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css">
+  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+  <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.bootstrap5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.4/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+
+  <script>
+    const loggedUser = '{{@user.username}}';
+    let hostName = 'http://localhost:5000';
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const headerValue = urlParams.get('header');
+    const terminalID = urlParams.get('terminalID');
+    const field = urlParams.get('field');
+    const tab = urlParams.get('tab');
+    const first_field = urlParams.get("first_field");
+    const merchantTab = urlParams.get("merchantTab");
+    const totalHeader = document.getElementById("total-header");
+    const terminal = document.getElementById("terminal");
+    totalHeader.textContent = field + " " + headerValue;
+    terminal.textContent = "Terminal: " + terminalID;
+    let currentPage = 1;
+    let totalData = 0;
+    let pageLimit = 15;
+
+    function generatePagination(pagination, func_name) {
+      const paginationNav = document.querySelector(".pagnation_nav");
+      paginationNav.innerHTML = '';
+
+      const paginationContainer = document.createElement("nav");
+      paginationContainer.setAttribute("aria-label", "Page navigation example");
+
+      const paginationList = document.createElement("ul");
+      paginationList.classList.add("pagination", "justify-content-end");
+
+      // Previous button
+      if (pagination.prev) {
+        const previousBtn = document.createElement("li");
+        previousBtn.classList.add("page-item");
+        previousBtn.innerHTML = `<a class="page-link previous" href="#" tabindex="-1" aria-disabled="true">Previous</a>`;
+        previousBtn.addEventListener("click", () => {
+          func_name(pagination.prev.page, pageLimit);
+        });
+        if (!pagination.prev) {
+          previousBtn.classList.add("disabled");
+        }
+        paginationList.appendChild(previousBtn);
+      }
+
+      // Page number buttons
+      for (let i = 1; i <= Math.ceil(totalData / pageLimit); i++) {
+        const pageNumberItem = document.createElement("li");
+        pageNumberItem.classList.add("page-item");
+        pageNumberItem.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+        pageNumberItem.addEventListener("click", () => {
+          func_name(i, pageLimit);
+        });
+        paginationList.appendChild(pageNumberItem);
+      }
+
+      // Next button
+      if (pagination.next) {
+        const nextBtn = document.createElement("li");
+        nextBtn.classList.add("page-item");
+        nextBtn.innerHTML = `<a class="page-link next" href="#">Next</a>`;
+        nextBtn.addEventListener("click", () => {
+          func_name(pagination.next.page, pageLimit);
+        });
+        if (!pagination.next) {
+          nextBtn.classList.add("disabled");
+        }
+        paginationList.appendChild(nextBtn);
+      }
+
+      paginationContainer.appendChild(paginationList);
+      paginationNav.appendChild(paginationContainer);
+    }
+
+
+    function customExport() {
+      var header = Array.from(document.querySelectorAll("#example th")).map(th => th.textContent);
+      var footer = Array.from(document.querySelectorAll("#example tfoot td")).map(td => td.textContent);
+      var body = Array.from(document.querySelectorAll("#example tbody tr")).map(tr => Array.from(tr.children).map(td => td.textContent));
+
+      body = body.map(row => row.map((cell, i) => i === 1 ? `"${cell}"` : cell));
+
+      var totalAmountRow = Array(header.length).fill('');
+      totalAmountRow[header.indexOf('amount')] = document.getElementById("total-amount").textContent;
+      body.push(totalAmountRow);
+
+      var data = [header].concat(body, [footer]);
+      var csvContent = "data:text/csv;charset=utf-8,";
+      data.forEach(function (row) {
+        csvContent += row.join(",") + "\n";
+      });
+      var encodedUri = encodeURI(csvContent);
+      var link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "data.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    if (tab === "1") {
+      totalHeader.textContent = field + " " + headerValue;
+      terminal.textContent = "Terminal: " + terminalID;
+
+
+      function getTransactionDetails(pageNumber, limit) {
+        axios
+          .get(`${hostName}/api/transactions/get_transaction_details?terminalID=${terminalID}&headerValue=${headerValue}&merchantId=${first_field}&loggedUser=${loggedUser}&page=${pageNumber}&limit=${limit}`)
+          .then(response => {
+            const data = response.data.data;
+            const metadata = response.data.metadata;
+            totalData = metadata.total;
+            currentPage = metadata.currentPage;
+            const tableBody = document.getElementById("table-body");
+            const fields = ["terminalId", "formattedDate", "rrn", "customer_name", "name", "payment_method", "amount", "status", "response"];
+            let totalAmount = 0;
+
+            // Clear the table body
+            tableBody.innerHTML = '';
+
+            data.forEach(transaction => {
+              const row = document.createElement("tr");
+
+              fields.forEach(field => {
+                const cell = document.createElement("td");
+                cell.textContent = transaction[field];
+                row.appendChild(cell);
+              });
+
+              const transactionAmount = parseFloat(transaction["amount"]);
+
+              if (!isNaN(transactionAmount)) {
+                totalAmount += transactionAmount;
+              }
+              tableBody.appendChild(row);
+            });
+
+            const totalAmountElement = document.getElementById("total-amount");
+            totalAmountElement.textContent = "Total: " + totalAmount.toFixed(2);
+            generatePagination(metadata.pagination, getTransactionDetails);
+          })
+          .catch(error => {
+            console.log("ERROR", error);
+          });
+      }
+
+      document.getElementById('export-button').addEventListener('click', customExport);
+
+      $(document).ready(function () {
+        getTransactionDetails(1, 15);
+      });
+
+    }
+
+    else if (tab === "3") {
+      function getAllTransactionsWithMerchant(pageNumber, limit) {
+        axios
+          .get(`${hostName}/api/transactions/get_all_transactions_with_merchant?merchantId=${first_field}&loggedUser=${loggedUser}&page=${pageNumber}&limit=${limit}`)
+          .then(response => {
+            const data = response.data.data;
+            const metadata = response.data.metadata;
+            totalData = metadata.total;
+            currentPage = metadata.currentPage;
+            const tableBody = document.getElementById("table-body");
+            const fields = ["terminalId", "formattedDate", "rrn", "customer_name", "name", "payment_method", "amount", "status", "response"];
+            let totalAmount = 0;
+
+            // Clear the table body
+            tableBody.innerHTML = '';
+
+            data.forEach(transaction => {
+              const row = document.createElement("tr");
+
+              fields.forEach(field => {
+                const cell = document.createElement("td");
+                cell.textContent = transaction[field];
+                row.appendChild(cell);
+              });
+
+              const transactionAmount = parseFloat(transaction["amount"]);
+
+              if (!isNaN(transactionAmount)) {
+                totalAmount += transactionAmount;
+              }
+              tableBody.appendChild(row);
+            });
+
+            const totalAmountElement = document.getElementById("total-amount");
+            totalAmountElement.textContent = "Total: " + totalAmount.toFixed(2);
+            generatePagination(metadata.pagination, getAllTransactionsWithMerchant);
+          })
+          .catch(error => {
+            console.log("ERROR", error);
+          });
+      }
+
+      document.getElementById('export-button').addEventListener('click', customExport);
+
+
+      $(document).ready(function () {
+        getAllTransactionsWithMerchant(1, 15);
+      });
+
+    }
+
+
+    else {
+
+      totalHeader.textContent = field + " " + headerValue;
+
+      function getAllTransactions(pageNumber, limit) {
+        axios
+          .get(`${hostName}/api/transactions/get_all_transactions?&headerValue=${headerValue}&loggedUser=${loggedUser}&page=${pageNumber}&limit=${limit}`)
+          .then(response => {
+            const data = response.data.data;
+            const metadata = response.data.metadata;
+            totalData = metadata.total;
+            currentPage = metadata.currentPage;
+            const tableBody = document.getElementById("table-body");
+            const fields = ["terminalId", "formattedDate", "rrn", "customer_name", "name", "payment_method", "amount", "status", "response"];
+            let totalAmount = 0;
+
+            tableBody.innerHTML = ''; 
+
+            data.forEach(transaction => {
+              const row = document.createElement("tr");
+
+              fields.forEach(field => {
+                const cell = document.createElement("td");
+                cell.textContent = transaction[field];
+                row.appendChild(cell);
+              });
+
+              const transactionAmount = parseFloat(transaction["amount"]);
+
+              if (!isNaN(transactionAmount)) {
+                totalAmount += transactionAmount;
+              }
+              tableBody.appendChild(row);
+            });
+
+            const totalAmountElement = document.getElementById("total-amount");
+            totalAmountElement.textContent = "Total: " + totalAmount.toFixed(2);
+
+            generatePagination(metadata.pagination, getAllTransactions);
+          })
+          .catch(error => {
+            console.log("ERROR", error);
+          });
+      }
+
+      document.getElementById('export-button').addEventListener('click', customExport);
+
+
+      $(document).ready(function () {
+        getAllTransactions(1, 15);
+      });
+
+    }
+
+
+  </script>
+</div>
+{{/zone}}

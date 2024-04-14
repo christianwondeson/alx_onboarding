@@ -1,0 +1,71 @@
+{{unit 'cdmf.unit.ui.title' pageTitle='New'}}
+{{unit 'cdmf.unit.data-tables-extended'}}
+{{unit 'cdmf.unit.ui.modal'}}
+
+{{#zone 'breadcrumbs'}}
+
+<li>
+  <a href='{{@app.context}}/'>
+    <i class='icon fw fw-home'></i>
+  </a>
+</li>
+<li>
+  <a href='{{@app.context}}/devices'>
+    Devices
+  </a>
+  /
+  <a href='/devicemgt/devices/edit_info'>
+    Device Information
+  </a>
+</li>
+{{/zone}}
+
+{{#zone 'topCss'}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+{{/zone}}
+<link rel="stylesheet" href="./css/style.css">
+
+{{#zone 'content'}}
+
+<div class="table-container">
+  <div class="table-content">
+
+    <table id="example" class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Device Type ID</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Last Updated</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+      </tbody>
+      <tfoot>
+        <tr>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="./js/app.js">
+</script>
+
+{{/zone}}
